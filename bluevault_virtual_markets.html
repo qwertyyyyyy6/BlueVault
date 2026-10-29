@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BlueVault | Virtual Markets</title>
+<style>
+  :root{--bg:#07111f;--panel:#0d1b2e;--panel2:#10243c;--line:#203b5b;--text:#eaf3ff;--muted:#91a9c7;--blue:#3b82f6;--cyan:#36d6f5;--green:#35d39a;--red:#ff6b7d;--gold:#f5c96a}
+  *{box-sizing:border-box} body{margin:0;background:radial-gradient(ellipse at 15% 0%,#143b68 0,transparent 40%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  button,input{font:inherit} button{cursor:pointer;border:0;border-radius:10px;padding:10px 14px;font-weight:750;color:white;background:linear-gradient(135deg,var(--blue),#2563eb);transition:.15s}button:hover{filter:brightness(1.12);transform:translateY(-1px)}button:disabled{opacity:.4;cursor:not-allowed;transform:none}
+  .shell{max-width:1250px;margin:auto;padding:22px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+  .brand{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:900;letter-spacing:-.6px}.logo{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#4aa5ff,#675cff);box-shadow:0 8px 28px #2877ed55;font-size:22px}
+  .tag{font-size:11px;letter-spacing:1.4px;color:var(--cyan);font-weight:900;text-transform:uppercase}.wallet{background:#10233a;border:1px solid #315174;padding:10px 15px;border-radius:14px;min-width:150px}.wallet small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1px}.wallet strong{font-size:21px}
+  .notice{border:1px solid #28547a;background:#0d2740;color:#cce6ff;padding:12px 15px;border-radius:12px;margin-bottom:20px;font-size:13px}
+  .hero{display:grid;grid-template-columns:1.4fr .8fr;gap:18px;margin-bottom:20px}.hero-main,.hero-side,.card{background:linear-gradient(145deg,#10233aee,#0b192aee);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 38px #0002}
+  .hero-main{padding:25px;position:relative;overflow:hidden}.hero-main:after{content:"";position:absolute;width:220px;height:220px;right:-55px;top:-80px;border-radius:50%;background:#2563eb22;filter:blur(5px)}h1{font-size:clamp(27px,4vw,42px);line-height:1.08;letter-spacing:-1.5px;margin:9px 0 12px}.hero p{color:var(--muted);max-width:580px;margin:0}.hero-side{padding:22px;display:flex;flex-direction:column;justify-content:space-between;gap:20px}.metric-label{color:var(--muted);font-size:12px}.big-number{font-size:30px;font-weight:900;letter-spacing:-1px}.positive{color:var(--green)}.negative{color:var(--red)}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.tab{background:#10243b;border:1px solid var(--line);color:#9db5d2}.tab.active{background:#1e4d85;border-color:#4d9bff;color:white}
+  .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:start}.card{padding:20px;min-width:0}.card-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.card h2{font-size:18px;margin:0;letter-spacing:-.4px}.sub{font-size:12px;color:var(--muted)}.price-row{display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap}.price{font-size:34px;font-weight:900;letter-spacing:-1px}.pill{display:inline-flex;padding:4px 8px;border-radius:7px;background:#173b35;color:var(--green);font-size:12px;font-weight:800}.pill.down{background:#44232e;color:var(--red)}
+  canvas{width:100%;height:180px;display:block;margin:14px 0 4px;border-radius:10px;background:linear-gradient(180deg,#0b1d31,#0b1828)}.tradebox{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.tradebox input{width:120px;background:#081523;border:1px solid #29445f;color:var(--text);border-radius:9px;padding:10px}.secondary{background:#19324d}.danger{background:#582536}.success{background:linear-gradient(135deg,#0f9f75,#087f68)}
+  .holdings{display:grid;gap:10px}.holding{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px;background:#0a1929;border:1px solid #1b3450;border-radius:11px}.holding strong{display:block}.holding small{color:var(--muted)}.empty{color:var(--muted);text-align:center;padding:22px 5px}
+  .game-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.game-card{background:linear-gradient(145deg,#10233a,#0b192a);border:1px solid var(--line);border-radius:18px;padding:20px}.game-table{min-height:145px;border-radius:12px;background:radial-gradient(ellipse,#15553f,#073126);border:1px solid #24735b;padding:16px;display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;margin:14px 0}.playing-card{width:58px;height:82px;background:#f7f9ff;color:#10223b;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:23px;font-weight:900;box-shadow:0 4px 12px #0004}.playing-card.red{color:#d83e57}.game-actions{display:flex;gap:8px;flex-wrap:wrap}.field{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0}.field label{color:var(--muted);font-size:12px}.field input{width:100px;background:#081523;border:1px solid #29445f;color:var(--text);border-radius:9px;padding:9px}.roulette-wheel{width:128px;height:128px;border-radius:50%;background:conic-gradient(#e5484d 0 10%,#0a1929 10% 20%,#e5484d 20% 30%,#0a1929 30% 40%,#e5484d 40% 50%,#0a1929 50% 60%,#e5484d 60% 70%,#0a1929 70% 80%,#e5484d 80% 90%,#0a1929 90%);border:6px solid #c8a45d;display:grid;place-items:center;font-size:24px;font-weight:900;box-shadow:0 0 25px #0006}.roulette-layout{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}.result{min-height:24px;color:var(--gold);font-weight:800;margin:8px 0}.footer{color:#6f89a7;font-size:12px;text-align:center;padding:25px 0 10px}.hidden{display:none!important}
+  @media(max-width:850px){.hero,.grid{grid-template-columns:1fr}.game-grid{grid-template-columns:1fr}.shell{padding:13px}.hero-main,.card,.game-card{padding:17px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand"><div class="logo">◆</div><div>BlueVault<div class="tag">Virtual markets · play credits only</div></div></div>
+    <div class="wallet"><small>Your balance</small><strong><span id="balance">250</span> <span style="font-size:12px;color:var(--cyan)">COINS</span></strong></div>
+  </header>
+  <div class="notice">🛡️ <strong>Simulation only.</strong> Coins have no cash value, cannot be purchased, transferred, or redeemed. Prices and game results are fictional. This demo saves progress only in this browser.</div>
+  <section class="hero">
+    <div class="hero-main"><div class="tag">Your virtual portfolio starts here</div><h1>Make your next move<br>count.</h1><p>Explore a fictional market, build your portfolio, or play a hand at the table. Every coin is just a game point.</p></div>
+    <div class="hero-side"><div><div class="metric-label">Portfolio value</div><div class="big-number" id="portfolioValue">250 <span style="font-size:13px;color:var(--muted)">coins</span></div><div class="sub" id="portfolioSub">Cash + investments</div></div><div><div class="metric-label">Market status</div><strong class="positive">● LIVE SIMULATION</strong><div class="sub">New price tick every 4 seconds</div></div></div>
+  </section>
+  <nav class="tabs"><button class="tab active" data-tab="market">📈 Market</button><button class="tab" data-tab="casino">🎲 Games</button><button class="tab" data-tab="portfolio">💼 Portfolio</button></nav>
+  <section id="market" class="tab-page">
+    <div class="grid">
+      <div class="card">
+        <div class="card-head"><div><h2>Stock 1</h2><div class="sub">STK1 · Fictional common stock</div></div><span class="pill" id="marketStatus">MARKET OPEN</span></div>
+        <div class="price-row"><div><div class="sub">Current price</div><div class="price" id="stockPrice">25.00</div></div><div style="text-align:right"><div class="pill" id="stockChange">+0.00%</div><div class="sub" id="tickLabel">Tick #0</div></div></div>
+        <canvas id="chart" width="900" height="250" aria-label="Fictional Stock 1 price chart"></canvas>
+        <div class="tradebox"><input id="sharesInput" type="number" min="1" max="100000" value="1" aria-label="Shares"><button onclick="tradeStock('buy')">Buy shares</button><button class="secondary" onclick="tradeStock('sell')">Sell shares</button></div>
+        <div class="sub" style="margin-top:10px">Price moves randomly on each tick. This is not connected to real markets.</div>
+        <div class="result" id="tradeResult" role="status"></div>
+      </div>
+      <div class="card"><div class="card-head"><div><h2>Quick portfolio</h2><div class="sub">Your virtual assets</div></div><span class="tag">OVERVIEW</span></div><div class="holdings" id="quickHoldings"></div><hr style="border:0;border-top:1px solid var(--line);margin:18px 0"><div class="metric-label">Available coins</div><div class="big-number" id="cashMetric">250</div><div class="sub">Spendable game credits</div></div>
+    </div>
+  </section>
+  <section id="casino" class="tab-page hidden">
+    <div class="game-grid">
+      <div class="game-card"><div class="card-head"><div><h2>♠ Blackjack</h2><div class="sub">Beat the dealer without going over 21</div></div><span class="tag">TABLE 01</span></div>
+        <div class="sub">Dealer</div><div class="game-table" id="dealerCards"><span class="sub">Start a round to deal cards</span></div><div class="sub">You</div><div class="game-table" id="playerCards"><span class="sub">Your cards will appear here</span></div>
+        <div class="field"><label for="bjBet">Bet</label><input id="bjBet" type="number" min="1" value="10"><span class="sub">Coins</span></div>
+        <div class="game-actions"><button onclick="blackjackStart()">Deal / New round</button><button class="secondary" id="hitBtn" onclick="blackjackHit()" disabled>Hit</button><button class="secondary" id="standBtn" onclick="blackjackStand()" disabled>Stand</button></div><div class="result" id="bjResult" role="status"></div>
+      </div>
+      <div class="game-card"><div class="card-head"><div><h2>🎡 Roulette</h2><div class="sub">Pick red, black, or a number</div></div><span class="tag">TABLE 02</span></div>
+        <div class="roulette-layout"><div class="roulette-wheel" id="rouletteWheel">?</div><div><div class="sub">European wheel · 0–36</div><div class="result" id="rouletteResult">Place a bet to spin.</div></div></div>
+        <div class="field"><label for="rouletteBet">Bet</label><input id="rouletteBet" type="number" min="1" value="10"><label for="roulettePick">Pick</label><select id="roulettePick" style="background:#081523;border:1px solid #29445f;color:var(--text);padding:9px;border-radius:9px"><option value="red">Red (2×)</option><option value="black">Black (2×)</option><option value="number">Exact number (36×)</option></select><input id="rouletteNumber" class="hidden" type="number" min="0" max="36" value="7" aria-label="Pick roulette number"></div>
+        <button onclick="rouletteSpin()">Spin roulette</button>
+      </div>
+    </div>
+  </section>
+  <section id="portfolio" class="tab-page hidden"><div class="card"><div class="card-head"><div><h2>Your portfolio</h2><div class="sub">Holdings are stored on this device</div></div><button class="secondary" onclick="resetDemo()">Reset demo</button></div><div class="holdings" id="fullHoldings"></div></div></section>
+  <footer class="footer">BlueVault is a fictional entertainment demo. No real-money gambling, investing, deposits, withdrawals, or prizes.</footer>
+</div>
+<script>
+(() => {
+ const START=250, STORE='bluevault-demo-v1';
+ let state={cash:START,shares:0,price:25,history:[25],tick:0};
+ try { const saved=JSON.parse(localStorage.getItem(STORE)); if(saved && Number.isFinite(saved.cash)&&Number.isFinite(saved.shares)&&Number.isFinite(saved.price)&&Array.isArray(saved.history)) state={...state,...saved}; } catch(e){}
+ let bj={active:false,player:[],dealer:[],bet:0,hidden:false};
+ const $=id=>document.getElementById(id);
+ const fmt=n=>Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+ const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){}};
+ const total=()=>state.cash+state.shares*state.price;
+ function update(){
+   $('balance').textContent=fmt(state.cash); $('cashMetric').textContent=fmt(state.cash);
+   $('portfolioValue').innerHTML=fmt(total())+' <span style="font-size:13px;color:var(--muted)">coins</span>';
+   $('stockPrice').textContent=fmt(state.price); $('tickLabel').textContent='Tick #'+state.tick;
+   const pct=state.history.length>1?(state.price/state.history[0]-1)*100:0;
+   $('stockChange').textContent=(pct>=0?'+':'')+pct.toFixed(2)+'%'; $('stockChange').className='pill'+(pct<0?' down':'');
+   $('quickHoldings').innerHTML=`<div class="holding"><div><strong>Cash</strong><small>Ready to use</small></div><strong>${fmt(state.cash)}</strong></div><div class="holding"><div><strong>Stock 1</strong><small>${state.shares} shares × ${fmt(state.price)}</small></div><strong>${fmt(state.shares*state.price)}</strong></div>`;
+   $('fullHoldings').innerHTML=$('quickHoldings').innerHTML+`<div class="holding"><div><strong>Total portfolio value</strong><small>Cash plus current share value</small></div><strong>${fmt(total())} coins</strong></div>`;
+   drawChart(); save();
+ }
+ function drawChart(){
+   const c=$('chart'),ctx=c.getContext('2d'),w=c.width,h=c.height,pad=25,vals=state.history.slice(-60);
+   ctx.clearRect(0,0,w,h); ctx.strokeStyle='#203b5b';ctx.lineWidth=1;
+   for(let i=1;i<=4;i++){let y=pad+(h-pad*2)*i/5;ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(w-pad,y);ctx.stroke()}
+   const min=Math.min(...vals)*.97,max=Math.max(...vals)*1.03,range=max-min||1;
+   const pts=vals.map((v,i)=>({x:pad+(w-pad*2)*(i/Math.max(1,vals.length-1)),y:h-pad-(v-min)/range*(h-pad*2)}));
+   if(pts.length){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.lineTo(pts[pts.length-1].x,h-pad);ctx.lineTo(pts[0].x,h-pad);ctx.closePath();ctx.fillStyle='#3b82f622';ctx.fill();ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.strokeStyle='#36d6f5';ctx.lineWidth=3;ctx.stroke();let p=pts[pts.length-1];ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);ctx.fillStyle='#36d6f5';ctx.fill()}
+ }
+ window.tradeStock=(side)=>{
+   const n=Math.floor(Number($('sharesInput').value)); if(!Number.isFinite(n)||n<1){$('tradeResult').textContent='Enter at least 1 share.';return}
+   if(side==='buy'){const cost=n*state.price;if(cost>state.cash){$('tradeResult').textContent='Not enough coins for that purchase.';return}state.cash-=cost;state.shares+=n;$('tradeResult').textContent=`Bought ${n} share(s) for ${fmt(cost)} coins.`}
+   else{if(n>state.shares){$('tradeResult').textContent='You do not own that many shares.';return}const proceeds=n*state.price;state.shares-=n;state.cash+=proceeds;$('tradeResult').textContent=`Sold ${n} share(s) for ${fmt(proceeds)} coins.`}
+   update();
+ };
+ function tick(){state.tick++;const drift=(Math.random()-.49)*.09;state.price=Math.max(.5,Math.round(state.price*(1+drift)*100)/100);state.history.push(state.price);if(state.history.length>120)state.history.shift();update()}
+ setInterval(tick,4000);
+ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.tab-page').forEach(x=>x.classList.toggle('hidden',x.id!==b.dataset.tab));if(b.dataset.tab==='market')drawChart()}));
+ const deck=()=>{let a=[];for(let s of ['♠','♥','♦','♣'])for(let r of ['A','2','3','4','5','6','7','8','9','10','J','Q','K'])a.push({s,r});for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+ const cardVal=c=>c.r==='A'?11:['K','Q','J'].includes(c.r)?10:Number(c.r);
+ const score=cards=>{let n=cards.reduce((s,c)=>s+cardVal(c),0),aces=cards.filter(c=>c.r==='A').length;while(n>21&&aces-- >0)n-=10;return n};
+ const showCards=(id,cards,hide=false)=>$(id).innerHTML=cards.map((c,i)=>`<div class="playing-card ${['♥','♦'].includes(c.s)?'red':''}">${hide&&i===1?'🂠':c.r+c.s}</div>`).join('');
+ function validBet(id){const n=Math.floor(Number($(id).value));return Number.isFinite(n)&&n>=1&&n<=state.cash?n:0}
+ function bjEnd(msg,delta){bj.active=false;$('hitBtn').disabled=true;$('standBtn').disabled=true;if(delta>0)state.cash+=delta;update();$('bjResult').textContent=msg}
+ window.blackjackStart=()=>{if(bj.active){$('bjResult').textContent='Finish your current hand first.';return}let bet=validBet('bjBet');if(!bet){$('bjResult').textContent='Enter a valid bet within your balance.';return}state.cash-=bet;bj={active:true,player:[],dealer:[],bet,hidden:true,deck:deck()};bj.player.push(bj.deck.pop(),bj.deck.pop());bj.dealer.push(bj.deck.pop(),bj.deck.pop());showCards('playerCards',bj.player);showCards('dealerCards',bj.dealer,true);$('hitBtn').disabled=false;$('standBtn').disabled=false;$('bjResult').textContent='Your total: '+score(bj.player);if(score(bj.player)===21)blackjackStand();else update()};
+ window.blackjackHit=()=>{if(!bj.active)return;bj.player.push(bj.deck.pop());showCards('playerCards',bj.player);$('bjResult').textContent='Your total: '+score(bj.player);if(score(bj.player)>21){showCards('dealerCards',bj.dealer);bjEnd('Bust! You lose '+fmt(bj.bet)+' coins.',0)}};
+ window.blackjackStand=()=>{if(!bj.active)return;while(score(bj.dealer)<17)bj.dealer.push(bj.deck.pop());showCards('dealerCards',bj.dealer);showCards('playerCards',bj.player);let p=score(bj.player),d=score(bj.dealer);if(p>21)bjEnd('Bust! You lose '+fmt(bj.bet)+' coins.',0);else if(d>21||p>d)bjEnd(`You win! Dealer ${d}, you ${p}. Payout: ${fmt(bj.bet*2)} coins.`,bj.bet*2);else if(p===d)bjEnd(`Push! Both score ${p}. Your bet is returned.`,bj.bet);else bjEnd(`Dealer wins (${d} to ${p}). You lose ${fmt(bj.bet)} coins.`,0)};
+ $('roulettePick').addEventListener('change',()=> $('rouletteNumber').classList.toggle('hidden',$('roulettePick').value!=='number'));
+ const reds=new Set([1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]);
+ window.rouletteSpin=()=>{let bet=validBet('rouletteBet');if(!bet){$('rouletteResult').textContent='Enter a valid bet within your balance.';return}let pick=$('roulettePick').value,num=Math.floor(Number($('rouletteNumber').value));if(pick==='number'&&(!Number.isInteger(num)||num<0||num>36)){$('rouletteResult').textContent='Pick a number from 0 to 36.';return}state.cash-=bet;let result=Math.floor(Math.random()*37),color=result===0?'green':reds.has(result)?'red':'black';$('rouletteWheel').textContent=result;$('rouletteWheel').style.background=color==='green'?'#13845b':color==='red'?'#b72e42':'#0a1929';let won=pick==='number'?result===num:color===pick;let payout=won?bet*(pick==='number'?36:2):0;if(won)state.cash+=payout;$('rouletteResult').textContent=`${result} ${color.toUpperCase()} · ${won?'You win '+fmt(payout)+' coins!':'No win this spin.'}`;update()};
+ window.resetDemo=()=>{if(confirm('Reset balance, shares, and price history to the demo defaults?')){state={cash:START,shares:0,price:25,history:[25],tick:0};bj={active:false,player:[],dealer:[],bet:0,hidden:false};$('bjResult').textContent='';$('tradeResult').textContent='';$('rouletteResult').textContent='Place a bet to spin.';update()}};
+ update();
+})();
+</script>
+</body>
+</html>
